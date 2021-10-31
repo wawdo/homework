@@ -1,0 +1,37 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+		$.ajax({
+			url : "/getCities",
+			type : "GET",
+			success : function(data){
+				$("#dropdown").empty();
+				for (const property in data) {
+				  $("#dropdown").append("<option value='"+property+"' >"+property+"</option>");
+				}	
+			}
+		});
+		$("#cityForm").submit(function(e) {
+			var form = $(this);
+			var url = form.attr('action');
+			$.ajax({
+				   type: "POST",
+				   url: url,
+				   data: form.serialize(),
+				   success: function(data)
+				   {
+						$("#result").html('Temperature:' + data + '<span>&#8451;</span>');
+				   }
+				 });
+			e.preventDefault(); 
+		});
+	}); 
+
+ </script>
+<form id="cityForm" action="/getWeather" method="post">
+	City:
+	<select name="dropdown" id="dropdown" class="custom-select"></select>
+    <input type="submit" value="Go!"/>
+</form>
+<div id="result"><div>
+
